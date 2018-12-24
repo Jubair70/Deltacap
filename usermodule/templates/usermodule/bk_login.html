@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!-- 
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.0.2
+Version: 1.5.4
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+	<meta charset="utf-8" />
+	<title>Climate Smart Village Project</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<meta name="MobileOptimized" content="320">
+	<!-- BEGIN GLOBAL MANDATORY STYLES -->          
+	<link href="{{ STATIC_URL }}assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+	<!-- END GLOBAL MANDATORY STYLES -->
+	<!-- BEGIN THEME STYLES --> 
+	<link href="{{ STATIC_URL }}assets/css/style-metronic.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}css/login_style.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}assets/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}assets/css/plugins.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}assets/css/pages/coming-soon.css" rel="stylesheet" type="text/css"/>
+	<link href="{{ STATIC_URL }}assets/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+	<link href="{{ STATIC_URL }}assets/css/custom.css" rel="stylesheet" type="text/css"/>
+	<!-- END THEME STYLES -->
+	<link rel="shortcut icon" href="favicon.ico" />
+	<style>
+	.loginimg {
+	background-image:url({{ STATIC_URL }}assets/csvp_img/login_img2.png);
+	height:536px;
+	width:100%}
+	h1 { color:	#000000}
+	h4 { padding:0 0 5px 0;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	color:#000}
+	h3 { padding:40px 0 10px 0}
+	.coming-soon-content p {color:#999999}
+
+	.coming-soon-countdown {padding:0}
+	.pull-left {float:left}
+	/*.container {width:900px}*/
+	.social-icons2 li {
+  float:left;
+  display:inline;
+  list-style:none;
+  margin-right:5px;
+  margin-bottom:5px;
+    text-indent:15px;
+   }
+   .scroller p {font-size:12px; color:#fff; font-weight:bold}
+	.logo1 { height:57px;
+	width:100%}
+	.img-responsive {
+   display: block;
+   height: auto;
+   max-width: 100%;
+    float:left;
+    padding-right:5px
+}
+	</style>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body style="">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 coming-soon-header">
+			</div>
+		</div>
+		
+		<div class="row">
+		<div class="col-xs-1"></div>
+                  <div class="col-md-6 " style="background-color:#fff; min-height:536px; ">
+                      <div class="col-md-12" style="padding-top:15px; " >
+			  <a class="brand" href="index.html">
+				<img src="{{ STATIC_URL }}assets/csvp_img/project_logo.png" alt="logo" />
+				</a>
+				<h4 class="form-title">Climate Smart Villages in Bangladesh</h3>
+				
+				<form class="login-form" action="/usermodule/login/" method="post">
+        {% csrf_token %}
+			<h3 class="form-title">Login</h3>
+			<div class="alert alert-danger display-hide">
+				<button class="close" data-close="alert"></button>
+				<span>Enter any username and password.</span>
+			</div>
+			<div class="form-group">
+				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+				<label class="control-label visible-ie8 visible-ie9">Username</label>
+				<div class="input-icon">
+					<i class="fa fa-user"></i>
+					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Password</label>
+				<div class="input-icon">
+					<i class="fa fa-lock"></i>
+					<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"/>
+				</div>
+			</div>
+			<div class="form-actions">
+          <input type="hidden" id="redirect_url" name="redirect_url" value="{{redirect_url}}"/>
+			   <input type="submit" class="btn green pull-left" value="Login"/>
+			  <i class="m-icon-swapright m-icon-white"></i>
+				
+				
+				            
+			</div>
+		</form>
+		
+		
+		
+		<h3></h3>
+							
+							<div class="row" >
+                                
+                    <div class="col-md-3"><a href="#"><img class="img-responsive"  src="{{ STATIC_URL }}assets/csvp_img/logo1.png" alt="logo"></a></div>
+                        <div class="col-md-3"><a href="#"><img class="img-responsive"  src="{{ STATIC_URL }}assets/csvp_img/logo2.png" alt="logo"></a></div>
+                        <div class="col-md-3"><a href="#"><img class="img-responsive"  src="{{ STATIC_URL }}assets/csvp_img/logo3.png" alt="logo"></a></div>
+                    <div class="col-md-3"><a href="#"><img class="img-responsive"  src="{{ STATIC_URL }}assets/csvp_img/logo4.png" alt="logo"></a></div>
+                </div>
+
+			</div>
+                  </div>
+                  <div class="col-md-4  " style="padding:0">
+                     <div class="loginimg"> 
+				
+				<div class="portlet box ">
+						<div class="portlet-title2">
+							
+							<div class="tools">
+								
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="scroller" style="height:250px;" data-always-visible="1" data-rail-visible="0">
+								
+								<p style="text-align:justify;">
+									The “Climate Smart Villages for improved food & nutrition security in Char and Haor regions, the two most vulnerable fragile eco-systems of Bangladesh” project is being implemented by our partner NGOs – FIVDB and MMS in 50 villages of the Netrokona and Sirajganj districts of Bangladesh.
+The main focus of PCSV information system is to Geo-mapping and marking of the key characteristics of this individual villages that will include and not limited to mapping the land parameters, climate change vulnerable zone, infrastructure, land use, cropping pattern, constraints- challenges of community and detail adaptation strategy for the village mark all the villages under the project area and identify their problems related to livelihood, profession, cultural standard of living.
+								</p>
+								
+								
+							</div>
+						</div>
+					</div>
+				   </div>
+                  </div>
+              </div>
+		<!--/end row-->
+		<div class="row">
+			<div class="col-md-12 coming-soon-footer" style="padding-right:0">
+				2017 &copy; mPower-social.
+			</div>
+		</div>
+	</div>
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	<!-- BEGIN CORE PLUGINS -->   
+	<!--[if lt IE 9]>
+	<script src="assets/plugins/respond.min.js"></script>
+	<script src="assets/plugins/excanvas.min.js"></script> 
+	<![endif]-->   
+	<script src="{{ STATIC_URL }}assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" type="text/javascript" ></script>
+	<script src="{{ STATIC_URL }}assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>  
+	<script src="{{ STATIC_URL }}assets/plugins/jquery.cookie.min.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
+	<!-- END CORE PLUGINS -->
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script src="{{ STATIC_URL }}assets/plugins/countdown/jquery.countdown.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="{{ STATIC_URL }}assets/scripts/app.js" type="text/javascript"></script>
+	<script src="{{ STATIC_URL }}assets/scripts/coming-soon.js" type="text/javascript"></script>      
+	<!-- END PAGE LEVEL SCRIPTS --> 
+	<script>
+		jQuery(document).ready(function() {     
+		  //App.init();
+		  ComingSoon.init();
+		  $('.slimScrollDiv').css('margin-top','-40px');
+		});
+		 
+	</script>
+	<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

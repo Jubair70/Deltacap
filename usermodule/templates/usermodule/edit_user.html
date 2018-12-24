@@ -1,0 +1,299 @@
+{% extends 'base_test.html' %}
+{% load i18n %}
+{% block content %}
+<div class="col-md-12">
+    <!--{% if request.session.profile_edited %}
+    <div class="alert alert-success">Your Profile has been updated successfully.</div>
+    {% endif %}-->
+    <div class="portlet box red">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-reorder"></i> General Account Settings
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="horizontal-form" id="user_form" method="post" action="/usermodule/edit/{{id}}/"
+                  enctype="multipart/form-data">
+                <input type="hidden" name="userchange" value="userchange">
+                {% csrf_token %}
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ user_form.username.id_for_label }}">Username:</label>
+                                <input type="text" name="{{ user_form.username.name }}" class="form-control"
+                                       value="{{ user_form.username.value }}" readonly>
+                                <span class="help-block">{{ user_form.username.errors.as_text }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ user_form.first_name.id_for_label }}">Firstname:</label>
+                                <input type="text" name="{{ user_form.first_name.name }}" class="form-control"
+                                       value="{{ user_form.first_name.value }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ user_form.last_name.id_for_label }}">Lastname:</label>
+                                <input type="text" name="{{ user_form.last_name.name }}" class="form-control"
+                                       value="{{ user_form.last_name.value }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                                <input type="email" name="{{ user_form.email.name }}" class="form-control"
+                                       value="{{ user_form.email.value }}">
+                                <span class="help-block">{{ user_form.email.errors.as_text }}</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class=""></label>
+                                <div class="checkbox-list">
+                                    <label>
+                                        <input name="{{ profile_form.admin.name }}" type="checkbox" {% if profile_form.admin.value == 1 %} checked{% endif %}> Make This User Admin
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="col-md-6">#}
+{#                            <div class="form-group">#}
+{#                                <label for="{{ profile_form.employee_id.id_for_label }}">Employee Id:</label>#}
+{#                                <input type="text" name="{{ profile_form.employee_id.name }}" class="form-control"#}
+{#                                       value="{{ profile_form.employee_id.value }}">#}
+{#                                <span class="help-block">{{ profile_form.employee_id.errors.as_text }}</span>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Institution Type:</label>
+                                <select id="institution_type" class="form-control" onclick="load_institution(this)">
+                                <option value="">Select One</option>
+                                    {% for type_id,type_name in type %}
+                                        <option value="{{ type_id }}" {% if type_id == set_type_id %} selected{% endif %}>{{ type_name }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Institution Name:</label>
+                                <select id="id_institution" name="institution" class="form-control" required>
+                                    <option value="">Select One</option>
+                                </select>
+                                <input type="text" id="institution_text" name="institution" class="form-control" style="display: none">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Country:</label>
+                                <select id="{{ profile_form.country.id_for_label }}"
+                                        name="{{ profile_form.country.name }}" class="form-control">
+                                    {% for x,y in profile_form.fields.country.choices %}
+                                    <option value="{{ x }}" {% if profile_form.country.value == x %} selected{% endif %}>{{ y }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ profile_form.country.errors.as_text }}</span>
+                            </div>
+                        </div>
+
+{#                        <div class="col-md-6" >#}
+{#                            <div class="form-group">#}
+{#                                <label for="{{ profile_form.position.id_for_label }}">Position:</label>#}
+{#                                <input type="text" name="{{ profile_form.position.name }}" class="form-control"#}
+{#                                       value="{{ profile_form.position.value }}">#}
+{#                                <span class="help-block">{{ profile_form.position.errors.as_text }}</span>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label>Role</label>
+                                <select id="{{ role_form.role.id_for_label }}"
+                                        name="{{ role_form.role.name }}" class="form-control">
+                                    {% for m,n in role_form.fields.role.choices %}
+                                    <option value="{{ m }}" {% if role_form.role.value == m %} selected{% endif %}>{{ n }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ role_form.role.errors.as_text }}</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="display: none !important;">
+                            <div class="form-group">
+                                <label>Organisation name:</label>
+                                <select id="{{ profile_form.organisation_name.id_for_label }}"
+                                        name="{{ profile_form.organisation_name.name }}" class="form-control">
+                                    {% for m,n in profile_form.fields.organisation_name.choices %}
+                                    <option value="{{ m }}" {% if profile_form.organisation_name.value == m %} selected{% endif %}>{{ n }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ profile_form.organisation_name.errors.as_text }}</span>
+                            </div>
+                        </div>
+            		
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn red pull-right">Submit</button>
+                    <button onclick="history.go(-1);" style="margin-right:10px;" type="button" class="btn default pull-right">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block additional-javascript %}
+
+<!--<script type="text/javascript" src="/static/js/jquery.searchable-ie-1.1.0.min.js"></script> -->
+<!-- <script type="text/javascript" src="/static/js/usermodule_userprofile.js"></script>    -->
+<script>
+
+
+
+    set_institution_id = "{{ set_institution_id |safe }}"
+{#    console.log(set_institution_id);#}
+    $('#institution_type').trigger('click');
+    if(set_institution_id[0]>='0' && set_institution_id[0]<='9')
+    {
+
+    }
+
+    else {
+        $('#institution_text').val(set_institution_id);
+    }
+
+    var i1 = 0;
+
+
+    function ajaxcall() {
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+        }
+
+    function load_institution(obj) {
+            ajaxcall();
+            type_id = parseInt(obj.value);
+{#            console.log(type_id);#}
+
+
+            if (isNaN(parseFloat(type_id))) {
+                $('#id_institution').html("<option value=\"\">Select One</option>");
+            }
+            else if (type_id==9)
+            {
+                $('#id_institution').html("<option value=\"\">Select One</option>");
+                $('#id_institution').hide();
+                $('#id_institution').removeAttr('required');
+                $('#institution_text').val('');
+                $('#institution_text').show();
+                $('#institution_text').attr('required','required');
+            }
+            else {
+{#                $('#id_institution').html("<option value=\"\">Select One</option>");#}
+                $('#id_institution').show();
+                $('#id_institution').attr('required','required');
+                $('#institution_text').val('');
+                $('#institution_text').hide();
+                $('#institution_text').removeAttr('required');
+
+                $.ajax({
+                    url: '/usermodule/getInstitution/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'type_id': type_id},
+                    {#                    beforeSend: function () {#}
+                    {#                        $("#all_info_table").html('<div class="alert alert-success">Please Wait...loading....</div>');#}
+                    {#                    },#}
+                    success: function (result) {
+                       var html_code = "<option value=\"\">Select One</option>";
+                            for (i = 0; i < result.length; i++) {
+                                if (result[i].id ==set_institution_id)
+                                    html_code += "<option value=\"" + result[i].id + "\" selected> " + result[i].institution + "</option>";
+                                else
+                                    html_code += "<option value=\"" + result[i].id + "\"> " + result[i].institution + "</option>"
+                            }
+                            $('#id_institution').html(html_code);
+
+
+
+
+                    }
+                });
+            }
+    }
+
+
+    </script>
+
+
+</script>
+{% endblock %}
+
+{% block additional-headers %}
+<head>
+    <title>
+        {% block title %} Edit User {% endblock %}
+    </title>
+</head>
+<style>
+    .data-table-container table {
+        clear: both;
+        display: table !important;
+        overflow-x: auto;
+        width: 98% !important;
+    }
+
+    .highlight { background-color: #D9EDF7; }
+
+    .table th, .table td {
+        border: 1px solid #dddddd !important;
+    }
+
+
+
+
+</style>
+
+{% endblock %}

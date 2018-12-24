@@ -1,0 +1,274 @@
+{% extends 'base_test.html' %}
+{% load i18n %}
+{% block additional-headers %}
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" rel="stylesheet">
+    <style>
+    a { cursor: pointer; }
+
+    </style>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="alert alert-success" id="alert-success" style="display: none">
+  <strong>User Approved Successfully!<br>A notification mail is sent to user email </strong>
+</div>
+    <div class="alert alert-success" id="alert-reject" style="display: none">
+  <strong>User Rejected Successfully!</strong>
+</div>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Alert</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>If you want to approve a user, you have to appoint a role to that user</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+
+</div>
+
+
+   <div class="modal fade" id="confirm-reject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>You are about to reject a mobile user, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm_button" data-dismiss="modal">Confirm</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="portlet box red">
+        <div class="portlet-title">
+            <div class="caption"><i class="fa fa-adn"></i>Mobile User Approval</div>
+        </div>
+        <div class="portlet-body">
+
+            <br>
+            <div  style="height:500px;  overflow:auto;">
+                <table id="all_info_table" class="table table-bordered nowrap">
+                <thead>
+                <tr>
+                    <th style="white-space: nowrap">Username</th>
+                    <th style="white-space: nowrap">Full Name</th>
+                    <th style="white-space: nowrap">Institution</th>
+                    <th style="white-space: nowrap">Country</th>
+                    <th class="td-center" style="white-space: nowrap">Role</th>
+                    <th class="td-center" style="white-space: nowrap">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+{% block additional-javascript %}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+    var table;
+        $(document).ready(function () {
+{#             $('#all_info_table').DataTable({#}
+{#                "scrollX": true, "ordering": false,#}
+{#                deferRender: true#}
+{##}
+{#            });#}
+
+        });
+
+        var tbody = '';
+        var approve_list = {{ approve_list|safe }};
+        tbody += '<tr id="data_empty" hidden><td colspan="6" class="td-center">No Data Available</td></tr>';
+
+        for (var idx in approve_list) {
+            tbody += '<tr><td style="white-space: nowrap">' + approve_list[idx].username + '</td><td style="white-space: nowrap">' + approve_list[idx].fullname + '</td><td style="white-space: nowrap">' + approve_list[idx].institution + '</td><td style="white-space: nowrap">' + approve_list[idx].country + '</td><td style="white-space: nowrap"><select class="form-control" style="width: 200px" id="role_'+approve_list[idx].id+'_'+approve_list[idx].user_id+'"><option value="">Select One</option>{% for role_id,role_name in role %}<option value="{{ role_id }}">{{ role_name}}</option>{% endfor %}</select></td><td class="td-center" style="white-space: nowrap"><a class="tooltips" data-container="body" data-placement="top" data-original-title="Approve" id="approve_'+approve_list[idx].id+'_'+approve_list[idx].user_id+'" onclick="approve('+approve_list[idx].id+','+approve_list[idx].user_id+')"><i class="fa fa-2x fa-check-circle"></i></a><a class="delete-item tooltips" data-container="body"  data-placement="top"   id="reject_'+approve_list[idx].id+'_'+approve_list[idx].user_id+'" data-original-title="Reject" ><i class="fa fa-2x fa-times-circle"></i></a></td></tr>';
+        }
+        $("#all_info_table").find('tbody').html(tbody);
+
+
+        var remove_cnt = 0;
+
+        if(remove_cnt == approve_list.length)
+        {
+            $('#data_empty').show();
+        }
+
+    function approve(prof_id,user_id) {
+
+{#        ajaxcall();#}
+{#        console.log(prof_id,user_id);#}
+        if ($('#role_' + prof_id + '_'+user_id+' option:selected').val() == "") {
+            $('#confirm-delete').modal('toggle');
+        }
+        else {
+            $("#alert-success").css('opacity', '1');
+            $('#alert-success').show();
+            $("#alert-success").fadeTo(1500, 0).slideUp(500);
+
+            role_id = $('#role_' + prof_id + '_'+user_id+' option:selected').val();
+            $('#role_' + prof_id+ '_'+user_id).closest('tr').remove();
+            remove_cnt++;
+
+            $.ajax({
+                    url: '/usermodule/approve_user/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'prof_id':prof_id,
+                        'user_id':user_id,
+                        'role_id':role_id
+                    },
+                    beforeSend: function () {},
+                    success: function (result) {}
+            });
+        }
+        if (remove_cnt == approve_list.length) {
+            $('#data_empty').show();
+        }
+
+        $.each($('.tooltip'), function (index, element) {
+            $(this).remove();
+        });
+
+
+
+    }
+
+    var reject_element = "";
+
+    for (var idx in approve_list) {
+        $('#reject_' + approve_list[idx].id+'_'+approve_list[idx].user_id).click(function (e) {
+            $('#confirm-reject').modal('toggle');
+{#            console.log(this)#}
+            reject_element = this;
+
+            {#            table.destroy();#}
+            {#            table = datatable_reinitialize();#}
+        });
+    }
+
+
+    $('#confirm_button').on('click',function (e) {
+        var arr = $(reject_element).attr('id').split('_');
+        prof_id = arr[1];
+        user_id = arr[2];
+            $(reject_element).closest('tr').remove();
+            $("#alert-reject").css('opacity', '1');
+            $('#alert-reject').show();
+            $("#alert-reject").fadeTo(1500,0).slideUp(500);
+
+            remove_cnt++;
+            ajaxcall();
+            $.ajax({
+                    url: '/usermodule/reject_user/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'prof_id':prof_id,
+                        'user_id':user_id
+                    },
+                    beforeSend: function () {},
+                    success: function (result) {}
+            });
+
+
+            if(remove_cnt == approve_list.length)
+            {
+                $('#data_empty').show();
+            }
+            $.each($('.tooltip'), function (index, element) {
+                $(this).remove();
+            });
+    });
+
+    $('.delete-item').on('click', function (e) {
+        var criteria_id = $(this).attr("data-href");
+        $('.btn-ok').attr("href", criteria_id);
+    });
+
+
+
+    function datatable_reinitialize() {
+        return $('#all_info_table').DataTable({
+            "scrollX": true, "ordering": false,
+            deferRender: true
+
+        });
+    }
+
+
+    function ajaxcall() {
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        // Only send the token to relative URLs i.e. locally.
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    }
+                }
+            });
+        }
+
+    </script>
+{% endblock %}
